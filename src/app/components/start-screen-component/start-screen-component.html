@@ -1,0 +1,13 @@
+<form id="start-form">
+    <mat-form-field>
+        <mat-label>Benutzername</mat-label>
+        <input type="text" matInput [formControl]="usernameFormControl" placeholder="benutzername123" maxlength="16">
+        @if (usernameFormControl.hasError('username') && !usernameFormControl.hasError('required')) {
+            <mat-error>Der Benutzername muss zwischen 4-16 Zeichen haben und darf nur Buchstaben und Zahlen enthalten.</mat-error>
+        }
+        @if(usernameFormControl.hasError('required')) {
+            <mat-error>Benutzername ist <strong>erforderlich</strong></mat-error>
+        }
+    </mat-form-field>
+</form>
+<button id="start-button" matButton="tonal" >Basic</button>
