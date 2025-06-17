@@ -18,11 +18,21 @@ function usernameValidator(): ValidatorFn {
 
 
 @Component({
-  selector: 'app-start-screen-component',
+  selector: 'app-start-game-component',
   imports: [FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule],
-  templateUrl: './start-screen-component.html',
-  styleUrl: './start-screen-component.sass'
+  templateUrl: './start-game-component.html',
+  styleUrl: './start-game-component.sass'
 })
-export class StartScreenComponent {
+export class StartGameComponent {
   usernameFormControl = new FormControl("", [Validators.required, usernameValidator()])
+
+  onStart(): void {
+    if(this.usernameFormControl.invalid) {
+      console.warn('Form is invalid')
+      return;
+    }
+    
+    const username = this.usernameFormControl.value;
+    console.log('Starting with username:', username);
+  }
 }

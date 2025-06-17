@@ -1,4 +1,4 @@
-<form id="start-form">
+<form class="scale-size" id="start-form">
     <mat-form-field>
         <mat-label>Benutzername</mat-label>
         <input type="text" matInput [formControl]="usernameFormControl" placeholder="benutzername123" maxlength="16">
@@ -10,4 +10,4 @@
         }
     </mat-form-field>
 </form>
-<button id="start-button" matButton="tonal">Start</button>
+<button class="scale-size" id="start-button" matButton="tonal" (click)="onStart()" [disabled]="usernameFormControl.invalid">Start</button>
