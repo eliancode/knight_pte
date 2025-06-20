@@ -3,6 +3,8 @@ import { MatInputModule } from '@angular/material/input';
 import { AbstractControl, FormControl, FormsModule, PatternValidator, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { SharedDataService } from '../../shared-data-service';
 
 function usernameValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -24,15 +26,18 @@ function usernameValidator(): ValidatorFn {
   styleUrl: './start-game-component.sass'
 })
 export class StartGameComponent {
-  usernameFormControl = new FormControl("", [Validators.required, usernameValidator()])
+
+  constructor(private router: Router, private sharedData: SharedDataService) {}
+
+  usernameFormControl = new FormControl('', [Validators.required, usernameValidator()])
 
   onStart(): void {
     if(this.usernameFormControl.invalid) {
-      console.warn('Form is invalid')
       return;
     }
     
-    const username = this.usernameFormControl.value;
-    console.log('Starting with username:', username);
+    const username: string= this.usernameFormControl.value!;
+    this.sharedData.setCurrentUsername(username);
+    this.router.navigate(['game'])
   }
 }
