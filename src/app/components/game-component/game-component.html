@@ -1,0 +1,17 @@
+<p>{{letter}}</p>
+<p>{{direction}}</p>
+<p>{{score}}</p>
+
+<form class="scale-size" id="start-form">
+    <mat-form-field>
+        <mat-label>Element</mat-label>
+        <input type="text" matInput [formControl]="elementFormControl" maxlength="16">
+        @if (elementFormControl.hasError('element') && !elementFormControl.hasError('required')) {
+            <mat-error>Die Antwort muss ein Element im Periodensystem der Elemente sein.</mat-error>
+        }
+        @if(elementFormControl.hasError('required')) {
+            <mat-error>Ein Element ist <strong>erforderlich</strong></mat-error>
+        }
+    </mat-form-field>
+</form>
+<button class="scale-size" id="start-button" matButton="tonal" (click)="formFilled()" [disabled]="elementFormControl.invalid">Start</button>
