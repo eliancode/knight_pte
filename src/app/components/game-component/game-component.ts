@@ -188,6 +188,8 @@ export class GameComponent {
     this.sub = this.$userAnswer.subscribe((answer: string) => {
       if (answer.toLowerCase() === solution.toLowerCase()) {
         this.score = this.score + 15;
+      } else {
+        this.score = Math.max(0, this.score - 5);
       }
       this.sub.unsubscribe();
       this.startGameLoop();
