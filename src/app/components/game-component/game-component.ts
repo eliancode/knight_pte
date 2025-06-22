@@ -12,7 +12,8 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { SharedDataService } from '../../shared-data-service';
+import { SharedDataService } from '../../services/shared-data-service';
+import { StoredUser } from '../../services/shared-data-service';
 
 interface Position {
   x: number;
@@ -39,6 +40,7 @@ interface DestinationElement {
   ],
   templateUrl: './game-component.html',
   styleUrl: './game-component.sass',
+  standalone: true,
 })
 export class GameComponent {
   letter!: string;
@@ -157,18 +159,19 @@ export class GameComponent {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    this.sharedData.addUser(
-      this.sharedData.getCurrentUser()!.username,
-      this.score
-    );
+    this.sharedData.addUser(this.sharedData.getCurrentUsername()!, this.score);
   }
 
   formFilled(): void {
     if (this.elementFormControl.invalid) {
+      this.elementFormControl.markAsTouched();
       return;
     }
     this.$userAnswer.next(this.elementFormControl.value!);
-    this.elementFormControl.reset();
+    this.elementFormControl.reset('', { emitEvent: false });
+    this.elementFormControl.setErrors(null);
+    this.elementFormControl.markAsPristine();
+    this.elementFormControl.markAsUntouched();
   }
 
   private startGameLoop(): void {
@@ -183,7 +186,7 @@ export class GameComponent {
     this.letter = randomElement[1].letter;
 
     this.sub = this.$userAnswer.subscribe((answer: string) => {
-      if (answer === solution) {
+      if (answer.toLowerCase() === solution.toLowerCase()) {
         this.score = this.score + 15;
       }
       this.sub.unsubscribe();

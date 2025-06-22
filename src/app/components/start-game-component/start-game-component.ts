@@ -4,7 +4,7 @@ import { AbstractControl, FormControl, FormsModule, PatternValidator, ReactiveFo
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { SharedDataService } from '../../shared-data-service';
+import { SharedDataService } from '../../services/shared-data-service';
 
 
 
@@ -12,7 +12,8 @@ import { SharedDataService } from '../../shared-data-service';
   selector: 'app-start-game-component',
   imports: [FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule],
   templateUrl: './start-game-component.html',
-  styleUrl: './start-game-component.sass'
+  styleUrl: './start-game-component.sass',
+  standalone: true
 })
 export class StartGameComponent {
 

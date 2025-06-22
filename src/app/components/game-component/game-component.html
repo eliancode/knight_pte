@@ -1,7 +1,3 @@
-<p style="top: 50vh">{{letter}}</p>
-<p style="top: 40vh">Richtung: {{direction}}</p>
-<p style="top: 60vh">Score: {{score}}</p>
-
 <form id="start-form">
   <mat-form-field>
     <mat-label>Element</mat-label>
@@ -10,6 +6,7 @@
       matInput
       [formControl]="elementFormControl"
       maxlength="16"
+      (keydown.enter)="formFilled()"
     />
     @if (elementFormControl.hasError('element') &&
     !elementFormControl.hasError('required')) {
@@ -28,5 +25,11 @@
   (click)="formFilled()"
   [disabled]="elementFormControl.invalid"
 >
-  Antort abgeben
+  Antwort abgeben
 </button>
+
+<div id="info-text">
+  <p class="info-item" style="top: 25vh">{{letter}}</p>
+  <p class="info-item" style="top: 40vh">{{direction}}</p>
+  <p class="info-item" style="top: 60vh">Score: {{score}}</p>
+</div>
