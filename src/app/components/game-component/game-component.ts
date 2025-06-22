@@ -181,7 +181,6 @@ export class GameComponent {
     const move: DestinationElement = this.getMove(randomElement[0]);
 
     const solution: string = move.letter;
-    console.log('Solution: ' + solution);
 
     this.letter = randomElement[1].letter;
 
