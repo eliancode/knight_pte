@@ -202,28 +202,38 @@ export class GameComponent {
       { x: startingPosition.x - 2, y: startingPosition.y - 1 },
       { x: startingPosition.x - 2, y: startingPosition.y + 1 },
     ];
-    const legalMoves: Position[] = [];
-    let letter: string;
-    this.pte_representation.forEach((pteElement, ptePosition) => {
-      knightMoves.forEach((startPosition) => {
-        if (
-          ptePosition.x === startPosition.x &&
-          ptePosition.y === startPosition.y
-        ) {
-          legalMoves.push(startPosition);
-          letter = pteElement.letter;
-        }
-      });
-    });
-    const move = legalMoves[Math.floor(Math.random() * legalMoves.length)];
 
-    const dx = move.x - startingPosition.x;
-    const dy = move.y - startingPosition.y;
+    const legalMoves: { pos: Position; letter: string }[] = [];
+
+    this.pte_representation.forEach((pteElement, ptePosition) => {
+      for (const move of knightMoves) {
+        if (ptePosition.x === move.x && ptePosition.y === move.y) {
+          legalMoves.push({ pos: ptePosition, letter: pteElement.letter });
+        }
+      }
+    });
+
+    const selected = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+    const dx = selected.pos.x - startingPosition.x;
+    const dy = selected.pos.y - startingPosition.y;
     this.setKnightMoveDirection(dx, dy);
-    return { letter: letter!, position: move };
+
+    return { position: selected.pos, letter: selected.letter };
   }
+
   private setKnightMoveDirection(dx: number, dy: number): void {
-    // TODO
+    let arrows: string = '';
+
+    const horizontalArrow = dx < 0 ? '🡠' : '🡢';
+    const verticalArrow = dy < 0 ? '🡡' : '🡣';
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      arrows = horizontalArrow.repeat(2) + verticalArrow;
+    } else {
+      arrows = verticalArrow.repeat(2) + horizontalArrow;
+    }
+
+    this.direction = arrows;
   }
   private elementValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
