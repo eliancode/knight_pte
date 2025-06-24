@@ -13,7 +13,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedDataService } from '../../services/shared-data-service';
-import { StoredUser } from '../../services/shared-data-service';
+import { CommonModule } from '@angular/common';
 
 interface Position {
   x: number;
@@ -37,6 +37,7 @@ interface DestinationElement {
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
+    CommonModule
   ],
   templateUrl: './game-component.html',
   styleUrl: './game-component.sass',
@@ -50,6 +51,8 @@ export class GameComponent {
     Validators.required,
     this.elementValidator(),
   ]);
+  scoreFeedback: string = '';
+  feedbackClass: string = '';
 
   private sub!: Subscription;
 
@@ -186,10 +189,20 @@ export class GameComponent {
 
     this.sub = this.$userAnswer.subscribe((answer: string) => {
       if (answer.toLowerCase() === solution.toLowerCase()) {
-        this.score = this.score + 15;
+        this.score += 15;
+        this.scoreFeedback = '+15';
+        this.feedbackClass = 'positive';
       } else {
         this.score = Math.max(0, this.score - 5);
+        this.scoreFeedback = '-5';
+        this.feedbackClass = 'negative';
       }
+
+      setTimeout(() => {
+        this.scoreFeedback = '';
+        this.feedbackClass = '';
+      }, 1000);
+
       this.sub.unsubscribe();
       this.startGameLoop();
     });

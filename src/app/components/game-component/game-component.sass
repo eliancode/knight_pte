@@ -1,33 +1,41 @@
 #start-form
-    position: relative
-    display: flex
-    justify-content: center
-    top: 10vh
+  position: relative
+  display: flex
+  justify-content: center
+  top: 10vh
 
 #start-form mat-form-field
-    width: 30%
+  width: 30%
 
 #start-button
-    position: absolute
-    top: 20vh
-    left: 50%
-    width: 30vh
-    height: 6vh
-    transform: translate(-50%)
+  position: absolute
+  top: 20vh
+  left: 50%
+  width: 30vh
+  height: 6vh
+  transform: translate(-50%)
 
 #info-text
-    position: relative  
-    left: 50%
-    transform: translateX(-50%)
-    display: flex
-    flex-direction: column
-    align-items: center
-    text-align: center
-    font-size: 70px
+  position: relative
+  width: 100%
 
 .info-item
-    position: absolute
-    left: 50%
-    transform: translateX(-50%)
-    font-size: 70px
-    text-align: center
+  position: absolute
+  top: 0
+  left: 50%
+  transform: translateX(-50%)
+  font-size: 24px
+  text-align: center
+  white-space: nowrap
+  font-size: 80px
+
+.score-feedback
+  margin-left: 10px
+  font-size: 14px
+  color: green
+  opacity: 0.8
+  font-size: 60px
+  &.positive
+    color: #1e7e34
+  &.negative
+    color: #c82333 

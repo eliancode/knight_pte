@@ -31,5 +31,10 @@
 <div id="info-text">
   <p class="info-item" style="top: 25vh">{{letter}}</p>
   <p class="info-item" style="top: 40vh">{{direction}}</p>
-  <p class="info-item" style="top: 60vh">Score: {{score}}</p>
+<p class="info-item" style="top: 60vh">
+  Score: {{ score }}
+  <span class="score-feedback" [ngClass]="feedbackClass">
+    {{ scoreFeedback }}
+  </span>
+</p>
 </div>
