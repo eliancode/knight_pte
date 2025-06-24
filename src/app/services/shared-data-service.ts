@@ -108,7 +108,9 @@ export class SharedDataService {
   }
 
   getCurrentId(): string | null {
-    return localStorage.getItem(this.CURRENT_ID_KEY);
+    const user = this.getCurrentUser();
+    if (!user) return null;
+    return user.id;
   }
 
   getUserLeaderboardPosition(id: string): number {
