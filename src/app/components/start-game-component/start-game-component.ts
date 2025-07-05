@@ -5,12 +5,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { SharedDataService } from '../../services/shared-data-service';
+import { LeaderboardComponent } from '../leaderboard-component/leaderboard-component';
 
 
 
 @Component({
   selector: 'app-start-game-component',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, LeaderboardComponent],
   templateUrl: './start-game-component.html',
   styleUrl: './start-game-component.sass',
   standalone: true

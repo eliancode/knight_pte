@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { SharedDataService } from '../../services/shared-data-service';
+import { LeaderboardComponent } from '../leaderboard-component/leaderboard-component';
 
 @Component({
   selector: 'app-game-over-component',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, LeaderboardComponent],
   templateUrl: './game-over-component.html',
   styleUrl: './game-over-component.sass',
 })

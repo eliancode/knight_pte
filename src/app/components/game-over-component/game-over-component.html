@@ -1,3 +1,4 @@
 <p class="center-text" id="game-over">GAME OVER!</p>
 <p class="center-text" id="placement-text">Deine Platzierung war <strong>#{{placement}}</strong> von <strong>{{userCount}}</strong> Teilnahmen!</p>
+<app-leaderboard-component [includeCurrentUser]="true"></app-leaderboard-component>
 <button class="scale-size" id="restart-button" matButton="tonal" (click)="restart()">Neues Spiel starten</button>

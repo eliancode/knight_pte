@@ -1,0 +1,19 @@
+<table>
+  <thead>
+    <tr>
+      <th>Platzierung</th>
+      <th>User</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let entry of users"
+      [ngClass]="{ bold: isCurrentUser(entry.user) }"
+    >
+      <td>{{ entry.position }}</td>
+      <td>{{ entry.user.username }}</td>
+      <td>{{ entry.user.score }}</td>
+    </tr>
+  </tbody>
+</table>
