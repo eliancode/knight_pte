@@ -8,9 +8,8 @@ describe('StartScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StartGameComponent]
-    })
-    .compileComponents();
+      imports: [StartGameComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StartGameComponent);
     component = fixture.componentInstance;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -37,29 +37,24 @@ interface DestinationElement {
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './game-component.html',
   styleUrl: './game-component.sass',
   standalone: true,
 })
-export class GameComponent {
+export class GameComponent implements OnInit, OnDestroy {
   letter!: string;
   direction!: string;
-  score: number = 0;
-  elementFormControl = new FormControl('', [
-    Validators.required,
-    this.elementValidator(),
-  ]);
-  scoreFeedback: string = '';
-  feedbackClass: string = '';
+  score = 0;
+  elementFormControl = new FormControl('', [Validators.required, this.elementValidator()]);
+  scoreFeedback = '';
+  feedbackClass = '';
+  sharedData = inject(SharedDataService);
 
   private sub!: Subscription;
 
-  private pte_representation: Map<Position, PTE_Element> = new Map<
-    Position,
-    PTE_Element
-  >([
+  private pte_representation: Map<Position, PTE_Element> = new Map<Position, PTE_Element>([
     [{ x: 1, y: 1 }, { letter: 'H' }],
     [{ x: 18, y: 1 }, { letter: 'He' }],
     [{ x: 1, y: 2 }, { letter: 'Li' }],
@@ -154,8 +149,6 @@ export class GameComponent {
 
   private $userAnswer = new Subject<string>();
 
-  constructor(private sharedData: SharedDataService) {}
-
   ngOnInit() {
     this.startGameLoop();
   }
@@ -239,13 +232,13 @@ export class GameComponent {
   }
 
   private setKnightMoveDirection(dx: number, dy: number): void {
-    let arrows: string = '';
+    let arrows = '';
 
     // '\u2192' is a rightwards arrow
     // '\u2190' is a leftwards arrow
     // '\u2191' is an upwards arrow
     // '\u2193' is a downwards arrow
-    const horizontalArrow = dx < 0 ? '\u2190' : '\u2192'; 
+    const horizontalArrow = dx < 0 ? '\u2190' : '\u2192';
     const verticalArrow = dy < 0 ? '\u2193' : '\u2191';
 
     if (Math.abs(dx) > Math.abs(dy)) {
@@ -265,9 +258,8 @@ export class GameComponent {
 
       const values = Array.from(this.pte_representation.values());
       const valid = values.some(
-        (item) =>
-          typeof item.letter === 'string' &&
-          item.letter.toLowerCase() === value.toLowerCase()
+        item =>
+          typeof item.letter === 'string' && item.letter.toLowerCase() === value.toLowerCase(),
       );
       return valid ? null : { element: true };
     };

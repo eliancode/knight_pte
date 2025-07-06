@@ -7,18 +7,12 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-game-container-component',
-  imports: [
-    MatChipsModule,
-    CountdownComponent,
-    GameComponent,
-    GameOverComponent,
-    CommonModule,
-  ],
+  imports: [MatChipsModule, CountdownComponent, GameComponent, GameOverComponent, CommonModule],
   templateUrl: './game-container-component.html',
   styleUrl: './game-container-component.sass',
 })
 export class GameContainerComponent {
-  timerExpired: boolean = false;
+  timerExpired = false;
 
   handleEvent(event: CountdownEvent): void {
     if (event.action === 'done') {

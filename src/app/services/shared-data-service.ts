@@ -48,7 +48,7 @@ export class SharedDataService {
 
   getUserById(id: string): StoredUser | null {
     const users = this.getAllUsers();
-    return users.find((user) => user.id === id) ?? null;
+    return users.find(user => user.id === id) ?? null;
   }
 
   getCurrentUser(): StoredUser | null {
@@ -56,7 +56,7 @@ export class SharedDataService {
     if (!id) return null;
 
     const users = this.getAllUsers();
-    return users.find((u) => u.id === id) ?? null;
+    return users.find(u => u.id === id) ?? null;
   }
 
   setCurrentUsername(username: string): void {
@@ -93,9 +93,7 @@ export class SharedDataService {
       user: user,
     }));
     if (currentUser) {
-      const currentUserPosition = sortedUsers.findIndex(
-        (user) => user.id === currentUser.id
-      );
+      const currentUserPosition = sortedUsers.findIndex(user => user.id === currentUser.id);
       if (currentUserPosition >= 5) {
         leaderboard.push({
           position: currentUserPosition + 1,
@@ -118,7 +116,7 @@ export class SharedDataService {
 
     const sortedUsers = [...users].sort((a, b) => b.score - a.score);
 
-    const index = sortedUsers.findIndex((user) => user.id === id);
+    const index = sortedUsers.findIndex(user => user.id === id);
 
     return index !== -1 ? index + 1 : -1;
   }

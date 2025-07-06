@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   SharedDataService,
   LeaderboardEntry,
@@ -13,13 +13,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './leaderboard-component.sass',
   standalone: true,
 })
-export class LeaderboardComponent {
+export class LeaderboardComponent implements OnInit {
   @Input() includeCurrentUser = false;
 
   users: LeaderboardEntry[] = [];
   currentUser: StoredUser | null = null;
-
-  constructor(private sharedData: SharedDataService) {}
+  sharedData = inject(SharedDataService);
 
   ngOnInit() {
     this.currentUser = this.sharedData.getCurrentUser();

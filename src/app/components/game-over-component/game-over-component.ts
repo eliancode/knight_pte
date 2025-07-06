@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { SharedDataService } from '../../services/shared-data-service';
@@ -13,8 +13,8 @@ import { LeaderboardComponent } from '../leaderboard-component/leaderboard-compo
 export class GameOverComponent implements OnInit {
   placement: number | null = null;
   userCount: number | null = null;
-
-  constructor(private router: Router, private sharedData: SharedDataService) {}
+  router = inject(Router);
+  sharedData = inject(SharedDataService);
 
   ngOnInit(): void {
     const currentId = this.sharedData.getCurrentId();
