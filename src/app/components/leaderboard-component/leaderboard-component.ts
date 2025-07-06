@@ -5,10 +5,11 @@ import {
   StoredUser,
 } from '../../services/shared-data-service';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-leaderboard-component',
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule],
   templateUrl: './leaderboard-component.html',
   styleUrl: './leaderboard-component.sass',
   standalone: true,

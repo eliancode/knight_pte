@@ -1,2 +1,29 @@
-.bold
-    font-weight: bold
+#leaderboard-cart
+  display: flex
+  justify-content: center
+  align-items: center
+  top: 25vh
+  height: 40vh
+  width: 30vw
+  margin: 0 auto
+  
+  table
+    width: 100%
+    border-collapse: collapse
+    text-align: center
+    
+    thead
+      th
+        padding: 12px
+        border-bottom: 2px solid #ddd
+        background-color: #f5f5f5
+    
+    tbody
+      tr
+        &.bold
+          font-weight: bold
+          background-color: #e3f2fd
+        
+        td
+          padding: 10px
+          border-bottom: 1px solid #eee
