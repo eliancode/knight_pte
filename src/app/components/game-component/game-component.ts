@@ -241,7 +241,11 @@ export class GameComponent {
   private setKnightMoveDirection(dx: number, dy: number): void {
     let arrows: string = '';
 
-    const horizontalArrow = dx < 0 ? '\u2190' : '\u2192';
+    // '\u2192' is a rightwards arrow
+    // '\u2190' is a leftwards arrow
+    // '\u2191' is an upwards arrow
+    // '\u2193' is a downwards arrow
+    const horizontalArrow = dx < 0 ? '\u2190' : '\u2192'; 
     const verticalArrow = dy < 0 ? '\u2193' : '\u2191';
 
     if (Math.abs(dx) > Math.abs(dy)) {
