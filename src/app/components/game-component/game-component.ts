@@ -156,6 +156,8 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.sharedData.addUser(this.sharedData.getCurrentUsername()!, this.score);
+    this.sharedData.resetCurrentUsername();
+    this.sharedData.resetCurrentUser();
   }
 
   formFilled(): void {
