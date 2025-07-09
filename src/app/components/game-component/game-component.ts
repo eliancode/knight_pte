@@ -53,6 +53,7 @@ export class GameComponent implements OnInit, OnDestroy {
   sharedData = inject(SharedDataService);
 
   private sub!: Subscription;
+  private lastPosition: Position | null = null;
 
   private pte_representation: Map<Position, PTE_Element> = new Map<Position, PTE_Element>([
     [{ x: 1, y: 1 }, { letter: 'H' }],
@@ -173,20 +174,26 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private startGameLoop(): void {
-    const keys = Array.from(this.pte_representation.entries());
-    const randomElement = keys[Math.floor(Math.random() * keys.length)];
+    const randomElement: { element: PTE_Element; position: Position } = (() => {
+      const entries = Array.from(this.pte_representation.entries());
+      const randomIndex = Math.floor(Math.random() * entries.length);
+      const [position, element] = entries[randomIndex];
+      return { element, position };
+    })();
+    const position = this.lastPosition ?? randomElement.position;
 
-    const move: DestinationElement = this.getMove(randomElement[0]);
+    const move: DestinationElement = this.getMove(position);
 
     const solution: string = move.letter;
 
-    this.letter = randomElement[1].letter;
+    this.letter = this.getLetterByPosition(position)!;
 
     this.sub = this.$userAnswer.subscribe((answer: string) => {
       if (answer.toLowerCase() === solution.toLowerCase()) {
         this.score += 15;
         this.scoreFeedback = '+15';
         this.feedbackClass = 'positive';
+        this.lastPosition = this.getPositionByLetter(solution);
       } else {
         this.score = Math.max(0, this.score - 5);
         this.scoreFeedback = '-5';
@@ -266,4 +273,21 @@ export class GameComponent implements OnInit, OnDestroy {
       return valid ? null : { element: true };
     };
   }
+
+  private getPositionByLetter(letter: string): Position | null {
+    for (const [position, element] of this.pte_representation) {
+      if (element.letter === letter) {
+        return position;
+      }
+    }
+    return null;
+  }
+
+  private getLetterByPosition(position: Position): string | null {
+    const element = this.pte_representation.get(position);
+    return element ? element.letter : null;
+  }
 }
+
+// the new element doesnt change if entered correctly
+// issue: getcurrentusername and getcurrentuser is reset so the placement can't be shown on the game over screen
