@@ -59,6 +59,10 @@ export class SharedDataService {
     return users.find(u => u.id === id) ?? null;
   }
 
+  resetCurrentUsername(): void {
+    localStorage.removeItem(this.CURRENT_USERNAME_KEY);
+  }
+
   setCurrentUsername(username: string): void {
     localStorage.setItem(this.CURRENT_USERNAME_KEY, username);
   }
@@ -68,8 +72,8 @@ export class SharedDataService {
     return username;
   }
 
-  resetCurrentUsername(): void {
-    localStorage.removeItem(this.CURRENT_USERNAME_KEY);
+  resetCurrentUser(): void {
+    localStorage.removeItem(this.CURRENT_ID_KEY);
   }
 
   getLeaderboard(): LeaderboardEntry[] {
