@@ -27,6 +27,7 @@ interface PTE_Element {
 interface DestinationElement {
   letter: string;
   position: Position;
+  numberOfMoves: number;
 }
 
 @Component({
@@ -54,6 +55,9 @@ export class GameComponent implements OnInit, OnDestroy {
 
   private sub!: Subscription;
   private lastPosition: Position | null = null;
+  private triedPositions: Position[] = [];
+  private currentElement: { element: PTE_Element; position: Position } | null = null;
+  private currentMove: DestinationElement | null = null;
 
   private pte_representation: Map<Position, PTE_Element> = new Map<Position, PTE_Element>([
     [{ x: 1, y: 1 }, { letter: 'H' }],
@@ -172,19 +176,28 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private startGameLoop(): void {
-    const randomElement: { element: PTE_Element; position: Position } = (() => {
-      const entries = Array.from(this.pte_representation.entries());
-      const randomIndex = Math.floor(Math.random() * entries.length);
-      const [position, element] = entries[randomIndex];
-      return { element, position };
-    })();
-    const position = this.lastPosition ?? randomElement.position;
+    if (!this.currentElement) {
+      this.currentElement = (() => {
+        const entries = Array.from(this.pte_representation.entries());
+        const randomIndex = Math.floor(Math.random() * entries.length);
+        const [position, element] = entries[randomIndex];
+        return { element, position };
+      })();
+    }
+    const position = this.lastPosition ?? this.currentElement.position;
 
-    const move: DestinationElement = this.getMove(position);
+    if (!this.currentMove) {
+      this.currentMove = this.getMove(position);
+      this.triedPositions = [];
+    }
 
-    const solution: string = move.letter;
+    const solution: string = this.currentMove.letter;
 
     this.letter = this.getLetterByPosition(position)!;
+
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
 
     this.sub = this.$userAnswer.subscribe((answer: string) => {
       if (answer.toLowerCase() === solution.toLowerCase()) {
@@ -192,10 +205,15 @@ export class GameComponent implements OnInit, OnDestroy {
         this.scoreFeedback = '+15';
         this.feedbackClass = 'positive';
         this.lastPosition = this.getPositionByLetter(solution);
+        // experimental this.triedPositions = [];
+        this.currentElement = null;
+        this.currentMove = null;
       } else {
         this.score = Math.max(0, this.score - 5);
         this.scoreFeedback = '-5';
         this.feedbackClass = 'negative';
+        this.triedPositions.push(this.currentMove!.position);
+        this.currentMove = null;
       }
 
       setTimeout(() => {
@@ -220,7 +238,7 @@ export class GameComponent implements OnInit, OnDestroy {
       { x: startingPosition.x - 2, y: startingPosition.y + 1 },
     ];
 
-    const legalMoves: { pos: Position; letter: string }[] = [];
+    let legalMoves: { pos: Position; letter: string }[] = [];
 
     this.pte_representation.forEach((pteElement, ptePosition) => {
       for (const move of knightMoves) {
@@ -230,12 +248,18 @@ export class GameComponent implements OnInit, OnDestroy {
       }
     });
 
+    if (legalMoves.length > 0 && this.triedPositions.length < legalMoves.length) {
+      legalMoves = legalMoves.filter(
+        move =>
+          !this.triedPositions.some(tried => tried.x === move.pos.x && tried.y === move.pos.y),
+      );
+    }
     const selected = legalMoves[Math.floor(Math.random() * legalMoves.length)];
     const dx = selected.pos.x - startingPosition.x;
     const dy = selected.pos.y - startingPosition.y;
     this.setKnightMoveDirection(dx, dy);
 
-    return { position: selected.pos, letter: selected.letter };
+    return { position: selected.pos, letter: selected.letter, numberOfMoves: legalMoves.length };
   }
 
   private setKnightMoveDirection(dx: number, dy: number): void {
@@ -286,6 +310,3 @@ export class GameComponent implements OnInit, OnDestroy {
     return element ? element.letter : null;
   }
 }
-
-// the new element doesnt change if entered correctly
-// issue: getcurrentusername and getcurrentuser is reset so the placement can't be shown on the game over screen
