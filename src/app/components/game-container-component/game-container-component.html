@@ -1,7 +1,7 @@
 <div id="countdown-timer">
     <mat-chip>
         <span [class.expired-text]="timerExpired">
-            <countdown #cd [config]="{leftTime: 30 , format: 'mm:ss'}" (event)="handleEvent($event)"
+            <countdown #cd [config]="{leftTime: 120 , format: 'mm:ss'}" (event)="handleEvent($event)"
                 [ngClass]="{ 'expired': timerExpired }"> </countdown>
         </span>
     </mat-chip>
