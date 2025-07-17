@@ -205,7 +205,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.scoreFeedback = '+15';
         this.feedbackClass = 'positive';
         this.lastPosition = this.getPositionByLetter(solution);
-        // experimental this.triedPositions = [];
+        this.triedPositions.push(this.lastPosition!);
         this.currentElement = null;
         this.currentMove = null;
       } else {
