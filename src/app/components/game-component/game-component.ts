@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -44,7 +44,7 @@ interface DestinationElement {
   styleUrl: './game-component.sass',
   standalone: true,
 })
-export class GameComponent implements OnInit, OnDestroy {
+export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   letter!: string;
   direction!: string;
   score = 0;
@@ -52,6 +52,7 @@ export class GameComponent implements OnInit, OnDestroy {
   scoreFeedback = '';
   feedbackClass = '';
   sharedData = inject(SharedDataService);
+  @ViewChild('focusEl') focusEl!: ElementRef<HTMLInputElement>;
 
   private sub!: Subscription;
   private lastPosition: Position | null = null;
@@ -161,6 +162,12 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.sharedData.addUser(this.sharedData.getCurrentUsername()!, this.score);
+  }
+  
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.focusEl.nativeElement.focus();
+    })
   }
 
   formFilled(): void {
